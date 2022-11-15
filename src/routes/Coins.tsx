@@ -62,11 +62,11 @@ function Coins() {
                 //setLoading(false);
             })();
         },[]);
-        
+
     return (
         <Container>
             <Header>
-                <Title>COIN</Title>
+                <Title>COIN TRACKER</Title>
             </Header>
             {loading ? (
                 <Loader>Loading...</Loader>
