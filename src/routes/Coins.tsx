@@ -23,8 +23,11 @@ const Coin = styled.li`
     border-radius : 15px;
     margin-bottom: 10px;
     a{
+        align-items:center;
+        display: flex;
         transition: color 0.2s ease-in;
-        display: block;
+        padding : 10px;
+        font-size: 20px;
     }
     &:hover {
         a{
@@ -32,6 +35,12 @@ const Coin = styled.li`
         }
     }
 `;
+
+const Img = styled.img`
+    width :35px;
+    height: 35px;
+    margin-right: 10px;
+`
 const Loader = styled.span`
     text-align : center;
     display: block;
@@ -53,13 +62,12 @@ interface CoinInterface{
 function Coins() {
     const [coins,setCoins] = useState<CoinInterface[]>([]);
     const [loading,setLoading] = useState(true);
-    useEffect(
-        ()=>{
+    useEffect(()=>{
             (async()=>{
                 const response  = await fetch("https://api.coinpaprika.com/v1/coins");
                 const json = await response.json();
                 setCoins(json.slice(0,100));
-                //setLoading(false);
+                setLoading(false);
             })();
         },[]);
 
@@ -74,7 +82,12 @@ function Coins() {
                     <CoinsList>
                         {coins.map((coin) => (
                             <Coin key={coin.id}>
-                                <Link to={`/${coin.id}`}>
+                                <Link
+                                    to={{
+                                        pathname : `/${coin.id}`,
+                                        state : {name : coin.name}
+                                }}>
+                                    <Img src={`https://coinicons-api.vercel.app/api/icon/${coin.symbol.toLowerCase()}`} />
                                     {coin.name} &rarr;
                                 </Link>
                             </Coin>
