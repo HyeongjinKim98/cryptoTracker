@@ -1,3 +1,33 @@
+## React Query
+
+1. Fetcher Function
+```
+function Before(){
+    const [data,setData] = useState([]);
+    const [loading,setLoading] = useState(true);
+    useEffect(()=>{
+            (async()=>{
+                const response  = await fetch(`https://www.thisisurl/com/data`);
+                const json = await response.json();
+                setLoading(false);
+            })();
+        },[]); 
+        ...
+```
+Using ReactQuery : 
+```
+export function fetchData(){
+    return fetch(`https://www.thisisurl/com/data`).then((response)=>
+        response.json()
+    );
+}
+```
+const {isLoading,data} = useQuery("datas",fetchData)
+```
+
+2. Cacheing Mechanism
+3. Devtools
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
