@@ -22,9 +22,9 @@ export function fetchData(){
     );
 }
 ```
+```
 const {isLoading,data} = useQuery("datas",fetchData)
 ```
-
 2. Cacheing Mechanism
 3. Devtools
 
