@@ -219,8 +219,10 @@ function Coin() {
                     </Tabs>
 
                     <Routes>
-                            <Route path="/price" element={<Price />} />
-                            <Route path="/chart" element={<Chart />} />
+                            <Route path="/price"
+                                element={<Price />} />
+                            <Route path="/chart"
+                                element={<Chart coinId={coinId!}/>} />
                         {/* it's old ver*/}
                         {/* <Route path={`/${coinId}/price`}>
                             <Price />
