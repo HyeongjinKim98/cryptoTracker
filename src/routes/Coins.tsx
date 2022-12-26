@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet";
 import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
@@ -75,28 +76,31 @@ function Coins() {
     const {isLoading,data} = useQuery<ICoin[]>("allCoins",fetchCoins)
     // requires 1. query key 2.fetcher function
     return (
-        <Container>
-            <Header>
-                <Title>COIN TRACKER</Title>
-            </Header>
-            {isLoading ? (
-                <Loader>Loading...</Loader>
+        <>
+        <Helmet>
+                <title>COIN TRACKER</title>
+        </Helmet><Container>
+                <Header>
+                    <Title>COIN TRACKER</Title>
+                </Header>
+                {isLoading ? (
+                    <Loader>Loading...</Loader>
                 ) : (
                     <CoinsList>
-                        {data?.slice(0,10).map((coin) => (
+                        {data?.slice(0, 10).map((coin) => (
                             <Coin key={coin.id}>
                                 <Link
                                     to={{
-                                        pathname : `/${coin.id}`,
-                                }}>
+                                        pathname: `/${coin.id}`,
+                                    }}>
                                     <Img src={`https://coinicons-api.vercel.app/api/icon/${coin.symbol.toLowerCase()}`} />
                                     {coin.name} &rarr;
                                 </Link>
                             </Coin>
                         ))}
                     </CoinsList>
-            )}
-        </Container>
+                )}
+            </Container></>
     );
 }
 export default Coins;

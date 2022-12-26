@@ -1,8 +1,9 @@
-import {useQuery} from  "react-query";
-import {fetchCoinHistory} from "../api";
+import { useQuery } from "react-query";
+import { fetchCoinHistory } from "../api";
 import ApexChart from "react-apexcharts";
+import { shallowEqualObjects } from "react-query/types/core/utils";
 
-interface IHistorical{
+interface IHistorical {
     time_open: string;
     time_close: string;
     open: number;
@@ -10,37 +11,50 @@ interface IHistorical{
     low: number;
     close: number;
     volume: number;
-    market_cap:number;
+    market_cap: number;
 }
-interface ChartProps{
+interface ChartProps {
     coinId: string
 }
 
-function Chart({coinId}:ChartProps){
-    const {isLoading,data} = useQuery<IHistorical[]>(["ohlcv",coinId], () =>
+function Chart({ coinId }: ChartProps) {
+    const { isLoading, data } = useQuery<IHistorical[]>(["ohlcv", coinId], () =>
         fetchCoinHistory(coinId));
-    return <div>{isLoading? "Loading chart ...":
+    console.log(data?.map((price => price.close)) as number[])
+    return <div>{isLoading ? "Loading chart ..." :
         <ApexChart
-            type= "line"
+            type="line"
             series={[
                 {
-                    name :"hello",
-                    data:[1,2,3,4,10]
-                },
-                {
-                    name :"sales",
-                    data: [15, 17, 35, 42, 25]
+                    name: "Price",
+                    data: data?.map((price => Number(price.close))) as number[],
+
                 },
             ]}
             options={{
-                // theme:{
-                //     mode:"dark"
-                // },
-                chart :{
-                    height : 500,
-                    width : 500,
-            },
-        }}/>
+                theme: {
+                    mode: "dark"
+                },
+                chart: {
+                    height: 500,
+                    width: 500,
+                    toolbar: { show: false },
+                    background: "transparent"
+                },
+                stroke: {
+                    curve: "smooth",
+                    width: 4
+                },
+                yaxis: { show: false },
+                xaxis: {
+                    axisBorder: { show: false },
+                    axisTicks: { show: false },
+                    labels: { show: false },
+                    categories : data?.map(price =>new Date(Number(price.time_close)*1000))
+                },
+                grid: { show: false }
+
+            }} />
     }</div>
 }
 export default Chart;
